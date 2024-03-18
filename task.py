@@ -29,40 +29,40 @@ import sys
 # 全局变量，控制音乐是否播放
 music_playing = True
 
-# def play_music(file_path, play_time):
-#     global music_playing
-#     pygame.init()
-#     pygame.mixer.init()
-#     pygame.mixer.music.load(file_path)
-#     pygame.mixer.music.play(-1)  # Loop indefinitely
+def play_music(file_path, play_time):
+    global music_playing
+    pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play(-1)  # Loop indefinitely
     
-#     start_time = pygame.time.get_ticks()
-#     clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
+    clock = pygame.time.Clock()
     
-#     music_playing = True  # 开始播放音乐
-#     while pygame.time.get_ticks() - start_time < play_time * 1000 and music_playing:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.mixer.music.stop()
-#                 pygame.quit()
-#                 sys.exit()
-#         clock.tick(30)
+    music_playing = True  # 开始播放音乐
+    while pygame.time.get_ticks() - start_time < play_time * 1000 and music_playing:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.mixer.music.stop()
+                pygame.quit()
+                sys.exit()
+        clock.tick(30)
     
-#     pygame.mixer.music.stop()
+    pygame.mixer.music.stop()
 
-# def play_break(file_path):  
-#     play_music(file_path, 300)
-
-
-
-# def stop_music():
-#     global music_playing
-#     music_playing = False  # 收到请求时停止音乐
-#     return "Music will be stopped."
+def play_break(file_path):  
+    play_music(file_path, 300)
 
 
-# @shared_task
-# def play_music_async(file_path, play_time=1500):
-#     play_music(file_path, play_time=1500)
-#     play_break(file_path)
-#     stop_music()
+
+def stop_music():
+    global music_playing
+    music_playing = False  # 收到请求时停止音乐
+    return "Music will be stopped."
+
+
+@shared_task
+def play_music_async(file_path, play_time=1500):
+    play_music(file_path, play_time=1500)
+    play_break(file_path)
+    stop_music()
