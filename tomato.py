@@ -43,22 +43,43 @@ def my_api():
     global start_time 
     data = request.json
     seq = data.get('sequence')
+
+    response_content = {
+        "versionid": "1.0",
+        "is_end": False,
+        "sequence": seq,
+        "timestamp": int(time.time() * 1000),
+        "directive": {
+            "directive_items": [
+                {
+                    "content": "欢迎来到番茄钟，您可以说开启计时",
+                    "type": "1"
+                }
+            ]
+        }
+    }
+
+    def update_res_content(s):
+        response_content['directive'] = {
+        "directive_items": [
+            {
+                "content": s,
+                "type": "1"
+            }
+        ]
+    }
+
     # 开启番茄钟
     if data.get('bizname') and data.get('focus') == '番茄钟':
-        response_content = {
-            "versionid": "1.0",
-            "is_end": False,
-            "sequence": seq,
-            "timestamp": int(time.time() * 1000),
-            "directive": {
+        response_content['directive'] = {
                 "directive_items": [
                     {
                         "content": "欢迎来到番茄钟，您可以说开启计时",
                         "type": "1"
                     }
                 ]
-            }
         }
+    
     # 开启计时
     elif data.get('start') and data.get('timer'):
         if start_time is None:  # 仅在start_time未初始化时设置它
